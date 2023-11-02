@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const {UserModel}=require("../models/user.model")
 const {authMiddleware} = require("../middlewares/auth.middleware")
+require("dotenv").config()
 
 const userRouter = express.Router()
 
@@ -58,7 +59,7 @@ userRouter.post('/login', async (req, res) => {
 
       if(await bcrypt.compare(password, user.password))
       {
-          const token = jwt.sign({ user: user }, "JWT_SECRET", {
+          const token = jwt.sign({ user: user }, process.env.SECRET_KEY, {
               expiresIn: "30d",
           });
 
